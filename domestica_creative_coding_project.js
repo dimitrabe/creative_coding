@@ -6,6 +6,7 @@ const settings = {
   dimensions: [ window.innerWidth, window.innerHeight ]
 };
 
+let cursor_position;
 let manager;
 let position_x;
 let position_y;
@@ -13,73 +14,109 @@ let draw_position_y;
 let draw_position_x;
 
 const sketch = ({ context, width, height }) => {
-    context.fillStyle = 'white';
-    context.fillRect(0, 0, width, height);
-
-    const radius_small = Math.min(width,height)/8;
-    const radius_big = radius_small *3;
-    const center_y = height*0.5;
-    const center_x = width*0.5;
     
-    context.lineStyle = 'black';
-    context.lineWidth = 4;
+    cursor_position = new Vector(0,0);
+    const agents = [];
+    const num_of_agents = 10;
+    const agents_radius = Math.min(width,height)/num_of_agents/2;
+    const eyeball_radius = agents_radius/3;
+          
+    let x = agents_radius;
+    let y = agents_radius;
 
-    context.save();
-    context.translate(center_x, center_y);    
-    context.beginPath();
-    context.arc(0, 0, radius_big, 0, 2*Math.PI)    
-    context.stroke();
-    context.restore();
-       
+    for (let i=0; i<Math.floor(width/agents_radius); i++){
+      for (let j=0; j<Math.floor(height/agents_radius); j++){
+        agents.push(new Agent(x,y,agents_radius,x,y,eyeball_radius,4));
+        y = 2*j*agents_radius + agents_radius;
+      };
+      x = 2*i*agents_radius + agents_radius;
+    };
+  
+         
   return ({ context, width, height }) => {
     
-    context.fillStyle = 'white';
+    context.fillStyle = 'black';
     context.lineStyle = 'black';
-    context.lineWidth = 4;
     context.fillRect(0, 0, width, height);
-
-    context.save();
-    context.translate(center_x, center_y);   
-    context.beginPath();
-    context.arc(0, 0, radius_big, 0, 2*Math.PI)    
-    context.stroke();   
-    context.restore();
-
-    context.save();
-         
-    // find the distance of the cursor point from the center of the circle
-    const distCursor = Math.sqrt(Math.pow(center_x - position_x,2) + Math.pow(center_y - position_y,2));
-    //console.log( (center_x - position_x), Math.pow(center_x - position_x,2), (center_y - position_y), Math.pow(center_y - position_y,2), Math.pow(center_x - position_x,2) + Math.pow(center_y - position_y,2), distCursor);
     
-    // find the angle of the cursor from the center of teh circle
-    //const sinTheta = (position_y-center_y)/distCursor;
-    //const cosTheta = (position_x-center_x)/distCursor;
-    //console.log( "sin " + sinTheta, "cos " + cosTheta, "dist " + distCursor, "x " + position_x, "y " + position_y, "center x  " + center_x, "center y " + center_y);
-    
-    if (distCursor < (radius_big)){
-      draw_position_y = center_y;
-      draw_position_x = center_x;
-      context.fillStyle = 'red';
-    }
-    else{
-      draw_position_y = (position_y-center_y)/distCursor*(radius_big-radius_small)+center_y;
-      draw_position_x = (position_x-center_x)/distCursor*(radius_big-radius_small)+center_x;
-      context.fillStyle = 'black';
-    }
+    agents.forEach(agent => {
+      agent.move(cursor_position);
+      agent.draw(context);       
+    });
 
-    context.beginPath();    
-    context.arc( draw_position_x, draw_position_y, radius_small, 0, 2*Math.PI);
-    context.fill();
-    context.restore();
   };
 };
 
+class Vector {
+  constructor (x,y) {
+    this.x = x; 
+    this.y = y;
+  };
+
+getDist(the_other_vector){
+  const dx = this.x - the_other_vector.x;
+  const dy = this.y - the_other_vector.y;
+  return Math.sqrt(dx*dx + dy*dy);
+};
+
+};
+
+class Agent {
+  constructor (x, y, radius, draw_position_x, draw_position_y, eyeball_radius, line_width){
+    this.center_position = new Vector(x,y);    
+    this.radius  = radius;
+    this.color = 'white';
+    this.line_width = line_width;
+
+    this.eyeball_position = new Vector(draw_position_x,draw_position_y);
+    this.eyeball_radius = eyeball_radius;
+    this.eyeball_color = 'black';
+  };
+
+ draw(context) {  
+
+    context.save();
+    context.fillStyle = this.color;
+    context.lineWidth = this.line_width;
+    context.beginPath();
+    context.arc (this.center_position.x, this.center_position.y, this.radius, 0, 2*Math.PI)
+    context.fill();
+
+    context.fillStyle = this.eyeball_color;
+    context.beginPath();    
+    context.arc( this.eyeball_position.x, this.eyeball_position.y, this.eyeball_radius, 0, 2*Math.PI);
+    context.fill();
+    context.restore();
+
+    context.restore();
+ };
+
+ move(cursor_position) {
+    const distCursor = this.center_position.getDist(cursor_position);
+    
+    if (distCursor < (this.radius- this.eyeball_radius)){
+        this.eyeball_position.y = this.center_position.y; //cursor_position.y;
+        this.eyeball_position.x = this.center_position.x; //cursor_position.x;      
+    }
+    else{
+      this.eyeball_position.y = (cursor_position.y-this.center_position.y)/distCursor*(this.radius-this.eyeball_radius)+this.center_position.y;
+      this.eyeball_position.x = (cursor_position.x-this.center_position.x)/distCursor*(this.radius-this.eyeball_radius)+this.center_position.x;
+    };
+ 
+  if ((distCursor < (this.radius ))){
+    this.eyeball_color = 'red'; 
+    //console.log( cursor_position.x, this.eyeball_position.x, cursor_position.y, this.eyeball_position.y);       
+  }
+  else{
+    this.eyeball_color = 'black';
+  }; 
+
+};
+};
 
 const onMouseMove = (e) => {
-  position_x = e.pageX;
-  position_y = e.pageY;
-  rel_position_x = e.movementX;
-  rel_position_y = e.movementY;
+  cursor_position.x = e.pageX;
+  cursor_position.y = e.pageY;
   //console.log("event " + position_x, position_y);
   //console.log('That line');
   manager.render();
