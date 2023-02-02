@@ -1,4 +1,4 @@
-# creative_coding #javascript #html
+# creative_coding
 A compilation of creative coding experiments inspired by Domestika course "Creative Coding: Making visuals with Javascript" by Bruno Imbrizi.
 
 ## Grid of rectangles
@@ -27,8 +27,15 @@ Here we are using Perlin noise and look how beautiful results! Pay attention and
 Experimenting with text and pixel manipulation. 
 I got creative and had fun with a photo of my cat. :heart_eyes_cat::heart_eyes_cat::heart_eyes_cat:
 
-<img src="https://github.com/dimitrabe/creative_coding/blob/main/results/sketch05_image.png" alt="A pixelated image of an orange cat.">
+<img src="https://github.com/dimitrabe/creative_coding/blob/main/results/sketch05_image.png" alt="A pixelated image of an orange cat." width="850px">
 
-<img src="https://github.com/dimitrabe/creative_coding/blob/main/results/sketch05_imagebleach.png" alt="An image of a cat where some pixels have changed place and looks a bit faded.">
+<img src="https://github.com/dimitrabe/creative_coding/blob/main/results/sketch05_imagebleach.png" alt="An image of a cat where some pixels have changed place and looks a bit faded." width="850px">
 
+## Final project
+
+The final project was a mix of all the above inspired by a post I saw on Pinterest and I can no longer find. 
+The concept is that the screen is full of eyes and they are following the movement of the cursor. 
+When the cursor is touching an eye, the eye is becoming red. 
+
+<img src="https://github.com/dimitrabe/creative_coding/blob/main/results/final_project.gif" alt="The screen is full of white circles with black border arranged in a grid and covering the whole screen. Thebackground is black. Inside of each circle, there is another smaller black circle that moves based on the movement of the mouse cursor. When the cursor is inside the circle, the smaller circle becomes red.">
 
