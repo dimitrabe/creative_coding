@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+	<body>
+		<canvas> </canvas>
+
+		<script>
+			let my_canvas = document.querySelector('canvas');
+			my_canvas.width  = window.innerWidth;
+			my_canvas.height = window.innerHeight;
+			let context = my_canvas.getContext('2d');
+
+			const width = window.innerWidth;;
+			const height = window.innerHeight;
+
+            context.fillStyle = 'white';
+            context.fillRect(0, 0, width, height);
+			
+            class Vector {
+            constructor (x,y) {
+                this.x = x; 
+                this.y = y;
+            };
+
+            getDist(the_other_vector){
+            const dx = this.x - the_other_vector.x;
+            const dy = this.y - the_other_vector.y;
+            return Math.sqrt(dx*dx + dy*dy);
+            };
+
+            };
+
+            class Agent {
+            constructor (x,y,color){
+                this.positio = new Vector(x,y);
+                this.velocity = new Vector(randomInRange(-1,1), randomInRange(-1,1))
+                this.radius = randomInRange(4, 12);
+                this.color = "rgb(" + Math.floor(randomInRange(0,255)) + "," + Math.floor(randomInRange(0,255)) + "," + Math.floor(randomInRange(0,255)) + ")";
+                console.log("this color is " + this.color);
+            };
+
+            draw(context) {         
+
+                context.save();
+                context.translate(this.positio.x, this.positio.y);
+                context.lineWidth = 4;
+                context.beginPath();
+                context.arc (0, 0, this.radius, 0, 2*Math.PI);
+                context.fillStyle = this.color;
+                context.fill();
+                context.strokeStyle = this.color;
+                context.stroke();
+
+                context.restore();
+            };
+
+            move() {
+                this.positio.x = this.positio.x + this.velocity.x;
+                this.positio.y = this.positio.y + this.velocity.y;
+            };
+
+            bounce(width,height){
+                if (this.positio.x <= 0 || this.positio.x >=width){
+                this.velocity.x = this.velocity.x * (-1);
+                };
+                if (this.positio.y <= 0 || this.positio.y >=height){
+                this.velocity.y = this.velocity.y * (-1);
+                };
+            };
+
+            wrap(width,height){
+                if (this.positio.x <= 0){
+                this.positio.x = width;
+                } else if (this.positio.x >= width){
+                this.positio.x = 0;
+                }
+            
+                if (this.positio.y <= 0){
+                this.positio.y = height;
+                } else if (this.positio.y >= height){
+                this.positio.y = 0;
+                }
+            };
+
+            };
+
+            //console.log("start of script")
+            const agents = [];
+            //const color = ['#2997c1', '#e632a0', '#111981', '#512204', '#08d96d', '#01ce7e', '#f418d5', '#2bb24c', '#d16c59'];
+            for (let i=0; i<9; i++){
+                let x = randomInRange(0,width);
+                let y = randomInRange(0,height);
+                agents.push(new Agent(x,y));//,color[i]));
+            };
+
+            function everything_in_place() {
+
+                //context.clearRect(0, 0, width, height);
+                agents.forEach(agent => {                    
+                    agent.move();
+                    agent.bounce(width,height);
+                    //agent.wrap(width,height);
+                    agent.draw(context);                     
+                });
+
+                for (let i=0; i<agents.length;i++){
+                    const myagent = agents[i];
+                    //console.log("Agent number " + i + " agent color " + myagent.color);
+                    for (let j=i+1; j<agents.length; j++){
+                        const other = agents[j];
+
+                        const dist = myagent.positio.getDist(other.positio);
+
+                        if (dist > 200) continue;
+                        
+                        context.lineWidth = mapRange(dist,0,200,4,1);
+                        context.beginPath();
+                        context.moveTo(myagent.positio.x, myagent.positio.y);
+                        context.lineTo(other.positio.x, other.positio.y);
+                        context.strokeStyle = myagent.color;
+                        context.stroke();
+                        
+
+                    };
+                };
+
+                requestAnimationFrame(everything_in_place);
+                
+            };
+
+            everything_in_place();
+
+            // =/o.o\= Functions 
+            function randomInRange(min, max) {
+  				return (Math.random() * (max - min) ) + min;
+			}
+
+            //Maps the value from one range of [inputMin..inputMax] to another range of [outputMin..outputMax], 
+            //with min/max being inclusive. 
+            //By default, value is not clamped, but you can specify clamp as true to clamp the output within outputMin and outputMax.
+            function mapRange (value, inputMin, inputMax, outputMin, outputMax, clamp) {
+				// Reference:
+				// https://openframeworks.cc/documentation/math/ofMath/
+                var EPSILON = Number.EPSILON;
+				if (Math.abs(inputMin - inputMax) < EPSILON) {
+					return outputMin;
+				} else {
+					var outVal = ((value - inputMin) / (inputMax - inputMin) * (outputMax - outputMin) + outputMin);
+					if (clamp) {
+						if (outputMax < outputMin) {
+							if (outVal < outputMax) outVal = outputMax;
+							else if (outVal > outputMin) outVal = outputMin;
+						} else {
+							if (outVal > outputMax) outVal = outputMax;
+							else if (outVal < outputMin) outVal = outputMin;
+						}
+					}
+					return outVal;
+				}
+			}
+
+</script>
+		
+</body>
+</html>
