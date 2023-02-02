@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<body>
+
+		<canvas> </canvas>
+
+		<script>
+			let my_canvas = document.querySelector('canvas');
+			my_canvas.width  = window.innerWidth;
+			my_canvas.height = window.innerHeight;
+			let context = my_canvas.getContext('2d');
+			
+			const width = window.innerWidth;;
+			const height = window.innerHeight;
+			//console.log("Width: " + width + " Height: " + height);
+			context.fillStyle = 'white';
+			context.fillRect(0, 0, width, height);
+					
+			const cx =  width/2;
+			const cy =  height/2;
+			//console.log("cx: " + cx + " cy: " + cy);
+			const w = width * 0.01;
+			const h = height * 0.1;
+
+			let x,y;
+
+			const num = 20;
+			const radius = Math.min(width,height) * 0.3;
+
+			for( let i=0; i < num; i++){
+				let angle = degToRad(360/num)*i;
+				x = cx + radius * Math.sin(angle);
+				y = cy + radius * Math.cos(angle);
+
+				// moves the context, in the analogy of pen and paper, it moves the paper
+				// after the translation or rotation of whatever the paper stays where we 
+				// left it so any shapes drawn afterwards will follow this "translated" coordinates
+				// to restore the initial coordinates first we have to save them
+				context.save();
+				context.translate(x,y);
+				context.rotate(-angle);
+				context.scale(randomInRange(0.1,3), randomInRange(0.2,1.3));
+				//console.log(x,y,angle)
+
+				// moving the coordinates x,y is like moving the pen on the paper
+				context.beginPath();
+				context.rect(-w*0.5, randomInRange(0,-h*0.5),w,h);
+				context.fill();
+
+				// to restore the initial coordinates first we have to save them
+				context.restore();
+
+				context.save();
+				context.translate(cx,cy);
+				context.rotate(-angle);
+				context.lineWidth = randomInRange(0.0005,0.01)*width;
+
+				context.beginPath();
+				context.arc(0, 0, radius*randomInRange(0.7,1.3), 0, Math.random()*Math.PI*2);
+				context.stroke();
+				context.restore();
+			};
+
+			function randomInRange(min, max) {
+  				return (Math.random() * (max - min) ) + min;
+			}
+			function degToRad(degrees) {
+				return degrees / 180 * Math.PI;
+			}
+
+		</script>
+		
+	</body>
+</html>
