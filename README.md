@@ -4,31 +4,31 @@ A compilation of creative coding experiments inspired by Domestika course "Creat
 ## Grid of rectangles
 The first step was to create a grid of rectangles, pulsing, seemingly changing the frame size but in reality a second rectangle is drawn nested inside the original rectangle randomly. 
 
-![alt text](https://github.com/dimitrabe/creative_coding/blob/main/results/sketch01.gif)
+<img src="https://github.com/dimitrabe/creative_coding/blob/main/results/sketch01.gif" alt="A grid of rectangles with white border in a black background">
 
 ## Arcs and rectangles
 Experimentations with translate, rotate and restore using arches.
 
-![alt text](https://github.com/dimitrabe/creative_coding/blob/main/results/sketch02.gif)
+<img src="https://github.com/dimitrabe/creative_coding/blob/main/results/sketch02.gif" alt="Multiple black arcs of various sizes forming a circle. Small rectangles are perpendicular to the arcs.">
 
 ## Bubbles everywhere
 Baby steps to object oriented-programming. Each agent is an object moving independently from the others. When two agents approach in a predefined distance, a line is connecting them. Agents, when the reach the limits of the canvas, can either disappear or can bounce back. 
 
-![alt text](https://github.com/dimitrabe/creative_coding/blob/main/results/sketch03_faster.gif)
+<img src="https://github.com/dimitrabe/creative_coding/blob/main/results/sketch03_faster.gif" alt="White circles with black border travelling around the screen. When two circles approach in a specific distance, a line is drawn to connect them.">
 
 ## Noise
 :musical_note: :musical_note: White noise, what an awful sound... :musical_note: :musical_note: 
 
 Here we are using Perlin noise and look how beautiful results! Pay attention and be patient!
 
-![alt text](https://github.com/dimitrabe/creative_coding/blob/main/results/sketch04.gif)
+<img src="https://github.com/dimitrabe/creative_coding/blob/main/results/sketch04.gif" alt="A grid of black rectangles slightly rotating based on noise function.">
 
 ## Pixel magic
 Experimenting with text and pixel manipulation. 
 I got creative and had fun with a photo of my cat. :heart_eyes_cat::heart_eyes_cat::heart_eyes_cat:
 
-![alt text](https://github.com/dimitrabe/creative_coding/blob/main/results/sketch05_image.png)
+<img src="https://github.com/dimitrabe/creative_coding/blob/main/results/sketch05_image.png" alt="A pixelated image of an orange cat.">
 
-![alt text](https://github.com/dimitrabe/creative_coding/blob/main/results/sketch05_imagebleach.png)
+<img src="https://github.com/dimitrabe/creative_coding/blob/main/results/sketch05_imagebleach.png" alt="An image of a cat where some pixels have changed place and looks a bit faded.">
 
 
