@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<body>
+
+		<canvas> </canvas>
+
+		<script>
+			//var avail_screen_width = screen.availWidth;
+			//var avail_screen_height = screen.availHeight;
+			let my_canvas = document.querySelector('canvas');
+			my_canvas.width  = window.innerWidth;
+			my_canvas.height = window.innerHeight;
+			let context = my_canvas.getContext('2d');
+
+			
+			const width = window.innerWidth;
+			const height = window.innerHeight;
+			
+			context.fillStyle = 'white';
+			context.fillRect(0, 0, width, height);
+			context.lineWidth = width * 0.011;
+
+			let w,h; 	
+			if (width <= height){
+				w = width  * 0.10;
+				h = w;
+			}
+			else{
+				h = height  * 0.10;
+				w = h;
+			}
+			
+			const num_of_blocks = 5;
+			const gap   = width  * 0.03;
+			const ix 	= width  * 0.5 - (w + gap) * num_of_blocks/2;
+			const iy 	= height * 0.5 - (h + gap) * num_of_blocks/2;
+
+			const off   = width  * 0.005;
+
+			let x, y;
+
+			for (let i = 0; i < num_of_blocks; i++) {
+				for (let j = 0; j < num_of_blocks; j++) {
+					x = ix + (w + gap) * i;
+					y = iy + (h + gap) * j;
+
+					context.beginPath();
+					context.rect(x, y, w, h);
+					context.stroke();
+
+					if (Math.random() > 0.5) {
+						context.beginPath();
+						context.rect(x + off / 2, y + off / 2, w - off, h - off);
+						context.stroke();
+					}
+				}
+			}
+		</script>
+		
+	</body>
+</html>
